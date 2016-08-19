@@ -1,9 +1,9 @@
 use strict;
 use warnings;
 
-our $VERSION = '0.1'; # 62bafe89f02df73
+our $VERSION = '0.2'; # 62bafe89f02df73
 our %IRSSI = (
-    authors     => 'Nei',
+    authors     => 'Nei, tslocum',
     contact     => 'Nei @ anti@conference.jabber.teamidiot.de',
     url         => "http://anti.teamidiot.de/",
     name        => 'away_notify',
@@ -16,13 +16,6 @@ our %IRSSI = (
 # function and you have enabled it. This can be used in conjunction
 # with /anames or tmux-nicklist-portable instead of the autowho script
 # on supporting server.
-
-# Usage
-# =====
-# currently, you have to enable the cap manually if the server supports it:
-# /quote CAP REQ :away-notify
-#
-# /rawlog save is your friend to check the results
 
 # Options
 # =======
@@ -43,6 +36,24 @@ Irssi::theme_register([
   'notify_away_channel'   => '{channick $0} {chanhost $1} is now away: {reason $3}',
   'notify_unaway_channel' => '{channick_hilight $0} {chanhost $1} is no longer away',
 ]);
+
+sub request_caps {
+    my @servers = Irssi::servers();
+    foreach my $server(@servers) {
+        if ($server->{connected}) {
+            $server->command("CAP LS");
+        }
+    }
+}
+
+sub irc_event_cap {
+    my ($server, $args, $nick, $address) = @_;
+    if ($args =~ /^\S+ (\S+) :(.*)$/) {
+        if (uc $1 eq 'LS' && $2 =~ / away-notify /i) {
+            $server->command("CAP REQ :away-notify");
+        }
+    }
+}
 
 sub irc_event_away {
     my ($server, $data, $nick, $userhost) = @_;
@@ -66,4 +77,7 @@ sub irc_event_away {
 
 Irssi::signal_register({'userhost event'=>[qw[iobject string]]});
 Irssi::settings_add_bool('lookandfeel', 'away_notify_public', 0);
+Irssi::signal_add('event cap', 'irc_event_cap');
 Irssi::signal_add('event away', 'irc_event_away');
+
+request_caps();
