@@ -43,5 +43,6 @@ after_script:
       ./_testing/github/extract-artefacts.zsh
     fi
 global_env:
+  - export LANG=C.UTF-8
   - export USE_ARTEFACTS_CACHE=yes
   - export EXTRACT_TEST_ARTEFACTS=yes
