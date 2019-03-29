@@ -14,6 +14,7 @@ addons:
     - xosd-bin # for osd
 before_install:
   - wget -nv https://download.opensuse.org/repositories/home:ailin_nemui:irssi-git/Debian_9.0/Release.key -O- | apt-key add -
+  - echo 'deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-git/Debian_9.0/ /' > /etc/apt/sources.list.d/irssi_obs.list
   - apt-get update -q && apt-get install -y irssi-git
 install:
   - |
