@@ -3,21 +3,9 @@ workflow "Check Scripts" {
   resolves = ["update-scripts", "show-failures"]
 }
 
-action "before_install" {
-  uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
-  args = "before_install"
-}
-
-action "install" {
-  uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
-  needs = ["before_install"]
-  args = "global_env install"
-}
-
 action "run-test" {
   uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
-  needs = ["install"]
-  args = "global_env before_script"
+  args = "before_install global_env install before_script"
 }
 
 action "report-test" {
