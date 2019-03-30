@@ -32,7 +32,7 @@ before_script:
 script:
   - ./_testing/report-test.zsh
 after_script:
-  - ./_testing/travis/show-failures.zsh
+  - ./_testing/github/show-failures.zsh
   - |
     if [ "${GITHUB_REF:-}" = refs/heads/master ] && [ -n "${GITHUB_TOKEN:-}" ]; then
       perl ./_testing/update-scripts-yaml.pl
