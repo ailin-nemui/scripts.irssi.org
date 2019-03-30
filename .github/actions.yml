@@ -27,7 +27,7 @@ before_script:
   - ./_testing/run-test.zsh
   - |
     if [ "${GITHUB_REF:-}" != refs/heads/master ]; then
-      git diff --stat master
+      git diff --stat origin/master
     fi
 script:
   - ./_testing/report-test.zsh
