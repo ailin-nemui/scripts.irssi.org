@@ -30,7 +30,8 @@ before_script:
       git diff --stat origin/master
     fi
 script:
-  - ./_testing/report-test.zsh
+  - ./_testing/report-test.zsh || rc=$?
+  - echo ${rc:-0} > $HOME/script-rc
 after_script:
   - ./_testing/github/show-failures.zsh
   - |
@@ -42,6 +43,8 @@ after_script:
     if [ "${GITHUB_REF:-}" = refs/heads/master ] && [ -n "${GITHUB_TOKEN:-}" ] && [ "${EXTRACT_TEST_ARTEFACTS:-no}" = yes ]; then
       ./_testing/github/extract-artefacts.zsh
     fi
+script_result:
+  - (exit "$(cat $HOME/script-rc)")
 global_env:
   - export LANG=C.UTF-8
   - export USE_ARTEFACTS_CACHE=yes

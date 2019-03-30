@@ -38,3 +38,9 @@ action "show-failures" {
   needs = ["On Pull Request"]
   args = "global_env after_script"
 }
+
+action "result" {
+  uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
+  needs = ["show-failures"]
+  args = "global_env script_result"
+}
