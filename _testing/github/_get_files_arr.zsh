@@ -2,7 +2,7 @@ filelist=(scripts/*.pl)
 if [[ $GITHUB_REF != refs/heads/master ]] {
     local -a scriptfiles
     OIFS=$IFS; IFS=$'\n'
-    scriptfiles=($(git diff --numstat --no-renames master|cut -f3|grep '^scripts/.*\.pl'))
+    scriptfiles=($(git diff --numstat --no-renames origin/master|cut -f3|grep '^scripts/.*\.pl'))
     IFS=$OIFS
     if [[ $#scriptfiles -gt 0 ]] {
 	filelist=($scriptfiles)

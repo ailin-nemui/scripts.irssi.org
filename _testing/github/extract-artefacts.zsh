@@ -17,7 +17,7 @@ git config credential.helper store
 
 git rm -qrf .
 
-echo "This branch stores the travis-ci results for $GITHUB_REPOSITORY
+echo "This branch stores the Github Actions results for $GITHUB_REPOSITORY
 See [the testing read-me](../master/_testing/) for details." > README.markdown
 pushd ..
 MARKDOWN_REPORT=1 ./_testing/report-test.zsh >> artefacts/README.markdown

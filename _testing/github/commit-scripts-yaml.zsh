@@ -2,7 +2,7 @@
 
 [ -z $GITHUB_TOKEN ] && exit
 
-echo "https://$ENV{GITHUB_TOKEN}:x-oauth-basic\@github.com" > $HOME/.git-credentials
+echo "https://$ENV{GITHUB_TOKEN}:x-oauth-basic@github.com" > $HOME/.git-credentials
 git config user.email "scripts@irssi.org"
 git config user.name "Irssi Scripts Helper"
 git config credential.helper store
