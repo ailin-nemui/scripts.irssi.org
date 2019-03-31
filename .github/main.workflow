@@ -1,10 +1,32 @@
+workflow "Check Scripts(M)" {
+  on = "push"
+  resolves = ["update-scripts"]
+}
+
 workflow "Check Scripts" {
   on = "push"
-  resolves = ["update-scripts", "show-failures"]
+  resolves = ["result"]
+}
+
+action "On Master Branch" {
+  uses = "actions/bin/filter@master"
+  args = "branch master"
+}
+
+action "On Pull Request" {
+  uses = "actions/bin/filter@master"
+  args = "not branch master"
+}
+
+action "run-test(m)" {
+  uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
+  needs = ["On Master Branch"]
+  args = "before_install global_env install before_script"
 }
 
 action "run-test" {
   uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
+  needs = ["On Pull Request"]
   args = "before_install global_env install before_script"
 }
 
@@ -14,28 +36,22 @@ action "report-test" {
   args = "global_env script"
 }
 
-action "On Master Branch" {
-  uses = "actions/bin/filter@master"
-  needs = ["report-test"]
-  args = "branch master"
+action "report-test(m)" {
+  uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
+  needs = ["run-test(m)"]
+  args = "global_env script"
 }
 
 action "update-scripts" {
   uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
-  needs = ["On Master Branch"]
+  needs = ["report-test(m)"]
   args = "global_env after_script"
   secrets = ["GITHUB_TOKEN"]
 }
 
-action "On Pull Request" {
-  uses = "actions/bin/filter@master"
-  needs = ["report-test"]
-  args = "not branch master"
-}
-
 action "show-failures" {
   uses = "ailin-nemui/actions-irssi/check-irssi-scripts@master"
-  needs = ["On Pull Request"]
+  needs = ["report-test"]
   args = "global_env after_script"
 }
 
