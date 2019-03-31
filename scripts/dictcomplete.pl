@@ -3,7 +3,7 @@ use vars qw($VERSION %IRSSI);
 
 use Irssi qw(signal_add_last settings_add_bool settings_add_str
                              settings_get_bool settings_get_str);
-$VERSION = '1.31';
+$VERSION = '1.32';
 %IRSSI = (
     authors     => 'Juerd (first version: Timo Sirainen)',
     contact     => 'juerd@juerd.nl',
