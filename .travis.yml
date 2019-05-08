@@ -41,9 +41,10 @@ install:
   cpanm --quiet --installdeps --notest .
 - env -u REPO_LOGIN_TOKEN
   ./_testing/autoinstall-perl-prereqs.zsh
+- cat auto/cpanfile
 - |
   pushd auto
-  env -u REPO_LOGIN_TOKEN cpanm --quiet --installdeps --notest .
+  env -u REPO_LOGIN_TOKEN cpanm --installdeps --notest .
   popd
 before_script:
 - export PATH=$HOME/irssi_inst/bin:$PATH
